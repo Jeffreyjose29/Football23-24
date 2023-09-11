@@ -40,8 +40,9 @@ teams$image_url <- if_else(teams$Team == "Arsenal", "https://assets.stickpng.com
                                                                                                                                                    if_else(teams$Team == "Sheffield Utd", "https://upload.wikimedia.org/wikipedia/en/thumb/9/9c/Sheffield_United_FC_logo.svg/1200px-Sheffield_United_FC_logo.svg.png",
                                                                                                                                                            if_else(teams$Team == "Tottenham", "https://upload.wikimedia.org/wikipedia/hif/6/6d/Tottenham_Hotspur.png",
                                                                                                                                                                    if_else(teams$Team == "West Ham", "https://logodownload.org/wp-content/uploads/2019/05/west-ham-united-logo-3.png",
+                                                                                                                                                                           if_else(teams$Team == "Wolves", "https://logodownload.org/wp-content/uploads/2019/04/wolverhampton-logo-escudo.png",
                                                                                                                                                                            # Wolves
-                                                                                                                                                                          "https://logodownload.org/wp-content/uploads/2019/04/wolverhampton-logo-escudo.png")))))))))))))))))))
+                                                                                                                                                                          NA))))))))))))))))))))
 
 
 # Trophies image link
@@ -64,10 +65,82 @@ teams$TrophyImgLink <- if_else(teams$Team == "Arsenal", "https://i.ibb.co/v4pHMy
                                                                                                                                                        if_else(teams$Team == "Sheffield Utd", "https://i.ibb.co/T04gbw3/Sheffield-United.png",
                                                                                                                                                                if_else(teams$Team == "Tottenham", "https://i.ibb.co/PTS3Cjd/Tottenham-Hotspur.png",
                                                                                                                                                                        if_else(teams$Team == "West Ham", "https://i.ibb.co/Vxq9gwy/West-Ham-United.png",
+                                                                                                                                                                               if_else(teams$Team == "Wolves", "https://i.ibb.co/mG3JFTh/Wolverhampton-Wanderers.png",
                                                                                                                                                                                # Wolves
-                                                                                                                                                                               "https://i.ibb.co/mG3JFTh/Wolverhampton-Wanderers.png")))))))))))))))))))
+                                                                                                                                                                               NA))))))))))))))))))))
 
 
+
+
+teams$Founded <- if_else(teams$Team == "Arsenal", 1886,
+                         if_else(teams$Team == "Aston Villa", 1874,
+                                 if_else(teams$Team == "Bournemouth", 1899,
+                                         if_else(teams$Team == "Brentford", 1889,
+                                                 if_else(teams$Team == "Brighton", 1901,
+                                                         if_else(teams$Team == "Burnley", 1882,
+                                                                 if_else(teams$Team == "Chelsea", 1905,
+                                                                         if_else(teams$Team == "Crystal Palace", 1905,
+                                                                                 if_else(teams$Team == "Everton", 1878,
+                                                                                         if_else(teams$Team == "Fulham", 1879,
+                                                                                                 if_else(teams$Team == "Liverpool", 1892,
+                                                                                                         if_else(teams$Team == "Luton Town", 1885,
+                                                                                                                 if_else(teams$Team == "Manchester City", 1880,
+                                                                                                                         if_else(teams$Team == "Manchester Utd", 1878,
+                                                                                                                                 if_else(teams$Team == "Newcastle Utd", 1892,
+                                                                                                                                         if_else(teams$Team == "Nott'ham Forest", 1865,
+                                                                                                                                                 if_else(teams$Team == "Sheffield Utd", 1889,
+                                                                                                                                                         if_else(teams$Team == "Tottenham", 1882,
+                                                                                                                                                                 if_else(teams$Team == "West Ham", 1895,
+                                                                                                                                                                         if_else(teams$Team == "Wolves", 1877,
+                                                                                                                                                                                 # Wolves
+                                                                                                                                                                                 NA))))))))))))))))))))
+
+teams$Wesbite <- if_else(teams$Team == "Arsenal", "www.arsenal.com",
+                         if_else(teams$Team == "Aston Villa", "www.avfc.co.uk",
+                                 if_else(teams$Team == "Bournemouth", "	ww.afcb.co.uk",
+                                         if_else(teams$Team == "Brentford", "www.brentfordfc.co.uk",
+                                                 if_else(teams$Team == "Brighton", "www.brightonandhovealbion.com",
+                                                         if_else(teams$Team == "Burnley", "	www.burnleyfootballclub.com",
+                                                                 if_else(teams$Team == "Chelsea", "	www.chelseafc.com",
+                                                                         if_else(teams$Team == "Crystal Palace", "www.cpfc.co.uk",
+                                                                                 if_else(teams$Team == "Everton", "www.evertonfc.com",
+                                                                                         if_else(teams$Team == "Fulham", "www.fulhamfc.com",
+                                                                                                 if_else(teams$Team == "Liverpool", "	www.liverpoolfc.com",
+                                                                                                         if_else(teams$Team == "Luton Town", "www.lutontown.co.uk",
+                                                                                                                 if_else(teams$Team == "Manchester City", "www.mancity.com",
+                                                                                                                         if_else(teams$Team == "Manchester Utd", "www.manutd.com",
+                                                                                                                                 if_else(teams$Team == "Newcastle Utd", "www.nufc.co.uk",
+                                                                                                                                         if_else(teams$Team == "Nott'ham Forest", "www.nottinghamforest.co.uk",
+                                                                                                                                                 if_else(teams$Team == "Sheffield Utd", "	www.sufc.co.uk",
+                                                                                                                                                         if_else(teams$Team == "Tottenham", "	www.tottenhamhotspur.com",
+                                                                                                                                                                 if_else(teams$Team == "West Ham", "www.whufc.com",
+                                                                                                                                                                         if_else(teams$Team == "Wolves", "www.wolves.co.uk",
+                                                                                                                                                                                 # Wolves
+                                                                                                                                                                                 NA))))))))))))))))))))
+
+
+teams$PreferredFormation <- if_else(teams$Team == "Arsenal", "4-3-3 Attacking",
+                               if_else(teams$Team == "Aston Villa", "4-4-2 Double 6",
+                                       if_else(teams$Team == "Bournemouth", "4-2-3-1",
+                                               if_else(teams$Team == "Brentford", "3-5-2 Flat",
+                                                       if_else(teams$Team == "Brighton", "4-2-3-1",
+                                                               if_else(teams$Team == "Burnley", "4-2-3-1",
+                                                                       if_else(teams$Team == "Chelsea", "4-3-3 Attacking",
+                                                                               if_else(teams$Team == "Crystal Palace", "4-3-3 Attacking",
+                                                                                       if_else(teams$Team == "Everton", "4-2-2 Double 6",
+                                                                                               if_else(teams$Team == "Fulham", "4-2-3-1",
+                                                                                                       if_else(teams$Team == "Liverpool", "4-3-3 Attacking",
+                                                                                                               if_else(teams$Team == "Luton Town", "3-4-1-2",
+                                                                                                                       if_else(teams$Team == "Manchester City", "4-3-3 Attacking",
+                                                                                                                               if_else(teams$Team == "Manchester Utd", "4-2-3-1",
+                                                                                                                                       if_else(teams$Team == "Newcastle Utd", "4-3-3 Attacking",
+                                                                                                                                               if_else(teams$Team == "Nott'ham Forest", " 3-4-1-2",
+                                                                                                                                                       if_else(teams$Team == "Sheffield Utd", "3-5-2 Flat",
+                                                                                                                                                               if_else(teams$Team == "Tottenham", "4-3-3 Attacking",
+                                                                                                                                                                       if_else(teams$Team == "West Ham", "4-2-3-1",
+                                                                                                                                                                               if_else(teams$Team == "Wolves", "4-2-3-1",
+                                                                                                                                                                                       # Wolves
+                                                                                                                                                                                       NA))))))))))))))))))))
 
 # Rewrite the team names so that it is matching with the transfer data
 teams$Team <- if_else(teams$Team == "Arsenal", "Arsenal FC",
@@ -89,8 +162,11 @@ teams$Team <- if_else(teams$Team == "Arsenal", "Arsenal FC",
                                                                                                                                                    if_else(teams$Team == "Sheffield Utd", "Sheffield United",
                                                                                                                                                            if_else(teams$Team == "Tottenham", "Tottenham Hotspur",
                                                                                                                                                                    if_else(teams$Team == "West Ham", "West Ham United",
+                                                                                                                                                                           if_else(teams$Team == "Wolves", "Wolverhampton Wanderers",
                                                                                                                                                                            # Wolves
-                                                                                                                                                                           "Wolverhampton Wanderers")))))))))))))))))))
+                                                                                                                                                                           NA))))))))))))))))))))
+
+
 
 
 
@@ -398,3 +474,78 @@ matchday_table$squad <- if_else(matchday_table$squad == "Arsenal", "Arsenal FC",
 matchday_table <- matchday_table[complete.cases(matchday_table$squad),]
 
 write.csv(matchday_table, "Standings.csv", row.names = FALSE)
+
+
+# 7. Match Information
+match_information <- data.frame()
+for(i in 2020:2024){
+  match_information_temp <- fb_match_results(country = "ENG", gender = "M", season_end_year = i, tier = "1st")
+  match_information_temp$Season <- i-1
+  match_information <- rbind(match_information, match_information_temp)
+}
+
+
+
+match_information$Home  <- if_else(match_information$Home  == "Arsenal", "Arsenal FC",
+                              if_else(match_information$Home  == "Aston Villa", "Aston Villa",
+                                      if_else(match_information$Home  == "Bournemouth", "AFC Bournemouth",
+                                              if_else(match_information$Home  == "Brentford", "Brentford FC",
+                                                      if_else(match_information$Home  == "Brighton", "Brighton & Hove Albion",
+                                                              if_else(match_information$Home  == "Burnley", "Burnley FC",
+                                                                      if_else(match_information$Home  == "Chelsea", "Chelsea FC",
+                                                                              if_else(match_information$Home  == "Crystal Palace", "Crystal Palace",
+                                                                                      if_else(match_information$Home  == "Everton", "Everton FC",
+                                                                                              if_else(match_information$Home  == "Fulham", "Fulham FC",
+                                                                                                      if_else(match_information$Home  == "Liverpool", "Liverpool FC",
+                                                                                                              if_else(match_information$Home  == "Luton Town", "Luton Town",
+                                                                                                                      if_else(match_information$Home  == "Manchester City", "Manchester City",
+                                                                                                                              if_else(match_information$Home  == "Manchester Utd", "Manchester United",
+                                                                                                                                      if_else(match_information$Home  == "Newcastle Utd", "Newcastle United",
+                                                                                                                                              if_else(match_information$Home  == "Nott'ham Forest", "Nottingham Forest",
+                                                                                                                                                      if_else(match_information$Home  == "Sheffield Utd", "Sheffield United",
+                                                                                                                                                              if_else(match_information$Home  == "Tottenham", "Tottenham Hotspur",
+                                                                                                                                                                      if_else(match_information$Home  == "West Ham", "West Ham United",
+                                                                                                                                                                              if_else(match_information$Home  == "Wolves", "Wolverhampton Wanderers",
+                                                                                                                                                                              # Wolves
+                                                                                                                                                                              match_information$Home ))))))))))))))))))))
+
+match_information$Away  <- if_else(match_information$Away  == "Arsenal", "Arsenal FC",
+                                   if_else(match_information$Away  == "Aston Villa", "Aston Villa",
+                                           if_else(match_information$Away  == "Bournemouth", "AFC Bournemouth",
+                                                   if_else(match_information$Away  == "Brentford", "Brentford FC",
+                                                           if_else(match_information$Away  == "Brighton", "Brighton & Hove Albion",
+                                                                   if_else(match_information$Away  == "Burnley", "Burnley FC",
+                                                                           if_else(match_information$Away  == "Chelsea", "Chelsea FC",
+                                                                                   if_else(match_information$Away  == "Crystal Palace", "Crystal Palace",
+                                                                                           if_else(match_information$Away  == "Everton", "Everton FC",
+                                                                                                   if_else(match_information$Away  == "Fulham", "Fulham FC",
+                                                                                                           if_else(match_information$Away  == "Liverpool", "Liverpool FC",
+                                                                                                                   if_else(match_information$Away  == "Luton Town", "Luton Town",
+                                                                                                                           if_else(match_information$Away  == "Manchester City", "Manchester City",
+                                                                                                                                   if_else(match_information$Away  == "Manchester Utd", "Manchester United",
+                                                                                                                                           if_else(match_information$Away  == "Newcastle Utd", "Newcastle United",
+                                                                                                                                                   if_else(match_information$Away  == "Nott'ham Forest", "Nottingham Forest",
+                                                                                                                                                           if_else(match_information$Away  == "Sheffield Utd", "Sheffield United",
+                                                                                                                                                                   if_else(match_information$Away  == "Tottenham", "Tottenham Hotspur",
+                                                                                                                                                                           if_else(match_information$Away  == "West Ham", "West Ham United",
+                                                                                                                                                                                   if_else(match_information$Away  == "Wolves", "Wolverhampton Wanderers",
+                                                                                                                                                                                           # Wolves
+                                                                                                                                                                                           match_information$Away ))))))))))))))))))))
+
+
+
+match_information <- merge(match_information, teams, by.x = "Home", by.y = "Team", all.x = TRUE, all.y = FALSE)
+match_information <- match_information %>% rename("HomeImageLink" = image_url)
+match_information <- merge(match_information, teams, by.x = "Away", by.y = "Team", all.x = TRUE, all.y = FALSE)
+match_information <- match_information %>% rename("AwayImageLink" = image_url)
+match_information <- subset(match_information, select = -c(TrophyImgLink.x, TrophyImgLink.y))
+
+
+match_information[c("HomeImageLink", "AwayImageLink")][is.na(match_information[c("HomeImageLink", "AwayImageLink")])] <- "https://vectorseek.com/wp-content/uploads/2023/08/Premier-League-Logo-Vector.svg-.png"
+
+match_information$RunDate <- as.Date(Sys.Date())
+match_information <- match_information %>%
+  filter(Date <= as.Date(Sys.Date()))
+
+
+write.csv(match_information, "MatchInformation.csv", row.names = FALSE)
