@@ -1,5 +1,5 @@
 # Package names
-packages <- c("tidyverse", "ggplot2", "devtools", "StatsBombR", "SBpitch", "hrbrthemes", "grid", "worldfootballR")
+packages <- c("tidyverse", "ggplot2", "devtools", "StatsBombR", "SBpitch", "hrbrthemes", "grid", "worldfootballR", "powerjoin")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
@@ -13,8 +13,22 @@ invisible(lapply(packages, library, character.only = TRUE))
 # Setting Working Directory
 setwd("C:/Users/jeffr/OneDrive/Desktop/Github Activities/Football23-24/Datasets")
 
+
+############################################################################################################################
+################################################### VARIABLE ASSIGNING #####################################################
+
+current_season <- if_else(as.Date(today()) >= '2023-08-12' | as.Date(today()) <= '2024-05-19', 2023, 2024)
+starting_year <- current_season - 4
+season_end_year <- current_season + 1
+
+############################################################################################################################
+
 # 1. Gather all the team names in the premier league
-teams <- fb_season_team_stats(country = "ENG", gender = "M", season_end_year = 2024, tier = "1st", stat_type = "shooting")
+Season <- data.frame(Season = starting_year:current_season)
+write.csv(Season, "Season.csv", row.names = FALSE)
+
+
+teams <- fb_season_team_stats(country = "ENG", gender = "M", season_end_year = season_end_year, tier = "1st", stat_type = "shooting")
 teams <- teams %>%
   select(Squad) %>%
   filter(!str_detect(Squad, '^vs '))
@@ -30,7 +44,7 @@ teams$image_url <- if_else(teams$Team == "Arsenal", "https://assets.stickpng.com
                                                                    if_else(teams$Team == "Chelsea", "https://logodownload.org/wp-content/uploads/2017/02/chelsea-fc-logo-0.png",
                                                                            if_else(teams$Team == "Crystal Palace", "https://upload.wikimedia.org/wikipedia/hif/c/c1/Crystal_Palace_FC_logo.png",
                                                                                    if_else(teams$Team == "Everton", "https://logodownload.org/wp-content/uploads/2019/04/everton-logo-escudo-3.png",
-                                                                                           if_else(teams$Team == "Fulham", "https://logos-download.com/wp-content/uploads/2018/09/FC_Fulham_Logo.png",
+                                                                                           if_else(teams$Team == "Fulham", "https://upload.wikimedia.org/wikipedia/sco/thumb/e/eb/Fulham_FC_%28shield%29.svg/1200px-Fulham_FC_%28shield%29.svg.png",
                                                                                                    if_else(teams$Team == "Liverpool", "https://assets.stickpng.com/images/580b57fcd9996e24bc43c4e5.png",
                                                                                                            if_else(teams$Team == "Luton Town", "https://static.wikia.nocookie.net/logopedia/images/7/76/Luton_Town_FC_logo_%28130_Years%29.png/revision/latest?cb=20151121195540",
                                                                                                                    if_else(teams$Team == "Manchester City", "https://cdn.freebiesupply.com/images/large/2x/manchester-city-logo-png-transparent.png",
@@ -92,6 +106,30 @@ teams$Founded <- if_else(teams$Team == "Arsenal", 1886,
                                                                                                                                                          if_else(teams$Team == "Tottenham", 1882,
                                                                                                                                                                  if_else(teams$Team == "West Ham", 1895,
                                                                                                                                                                          if_else(teams$Team == "Wolves", 1877,
+                                                                                                                                                                                 # Wolves
+                                                                                                                                                                                 NA))))))))))))))))))))
+
+# Team Colour
+teams$Colour <- if_else(teams$Team == "Arsenal", "#F10104",
+                         if_else(teams$Team == "Aston Villa", "#851547",
+                                 if_else(teams$Team == "Bournemouth", "#BB1118",
+                                         if_else(teams$Team == "Brentford", "#F81920",
+                                                 if_else(teams$Team == "Brighton", "#045AA3",
+                                                         if_else(teams$Team == "Burnley", "#59062B",
+                                                                 if_else(teams$Team == "Chelsea", "#1A37C9",
+                                                                         if_else(teams$Team == "Crystal Palace", "#0D5AB3",
+                                                                                 if_else(teams$Team == "Everton", "#0A0BA2",
+                                                                                         if_else(teams$Team == "Fulham", "#F8F8F8",
+                                                                                                 if_else(teams$Team == "Liverpool", "#D00A14",
+                                                                                                         if_else(teams$Team == "Luton Town", "#F74515",
+                                                                                                                 if_else(teams$Team == "Manchester City", "#91BFE3",
+                                                                                                                         if_else(teams$Team == "Manchester Utd", "#E30C0C",
+                                                                                                                                 if_else(teams$Team == "Newcastle Utd", "#292526",
+                                                                                                                                         if_else(teams$Team == "Nott'ham Forest", "#C81D39",
+                                                                                                                                                 if_else(teams$Team == "Sheffield Utd", "#E8101D",
+                                                                                                                                                         if_else(teams$Team == "Tottenham", "#FAFAFA",
+                                                                                                                                                                 if_else(teams$Team == "West Ham", "#772635",
+                                                                                                                                                                         if_else(teams$Team == "Wolves", "#FA9D10",
                                                                                                                                                                                  # Wolves
                                                                                                                                                                                  NA))))))))))))))))))))
 
@@ -174,11 +212,10 @@ teams$Team <- if_else(teams$Team == "Arsenal", "Arsenal FC",
 write.csv(teams, "Teams.csv", row.names = FALSE)
 
 
-
 # 2. Gathering transfer information
-for(i in 2019:2023){
+for(i in starting_year:current_season){
   team_urls <- tm_league_team_urls(country_name = "England", start_year = i)
-  if(i == 2019){
+  if(i == starting_year){
     epl_xfers <- tm_team_transfers(team_url = team_urls, transfer_window = "all")
   }else{
     epl_xfers <- rbind(tm_team_transfers(team_url = team_urls, transfer_window = "all"), epl_xfers)
@@ -365,7 +402,7 @@ write.csv(epl_managers, "Managers.csv", row.names = FALSE)
 squad_wages <- data.frame()
 player_stats <- data.frame()
 player_market_values <- data.frame()
-for (i in 2019:2023) {
+for (i in (starting_year + 1):current_season) {
   tm_team_url <- tm_league_team_urls(country_name = "England", start_year = i)
   fb_teams_url <- fb_teams_urls(fb_league_urls("ENG", "M", i+1, "1st"))
   
@@ -435,7 +472,7 @@ write.csv(epl_players, "Players.csv", row.names = FALSE)
 
 # 6. Matchday Table
 matchday_table <- data.frame()
-for(i in 2019:2023){
+for(i in starting_year:current_season){
   print(i)
   matchday_table_temp <- tm_matchday_table(country_name = "England", start_year = i, matchday = 38)
   matchday_table_temp$Season <- i
@@ -478,7 +515,7 @@ write.csv(matchday_table, "Standings.csv", row.names = FALSE)
 
 # 7. Match Information
 match_information <- data.frame()
-for(i in 2020:2024){
+for(i in (starting_year + 1):season_end_year){
   match_information_temp <- fb_match_results(country = "ENG", gender = "M", season_end_year = i, tier = "1st")
   match_information_temp$Season <- i-1
   match_information <- rbind(match_information, match_information_temp)
@@ -544,8 +581,90 @@ match_information <- subset(match_information, select = -c(TrophyImgLink.x, Trop
 match_information[c("HomeImageLink", "AwayImageLink")][is.na(match_information[c("HomeImageLink", "AwayImageLink")])] <- "https://vectorseek.com/wp-content/uploads/2023/08/Premier-League-Logo-Vector.svg-.png"
 
 match_information$RunDate <- as.Date(Sys.Date())
+
 match_information <- match_information %>%
-  filter(Date <= as.Date(Sys.Date()))
+  select(-ends_with(".x")) %>%
+  select(-ends_with(".y"))
 
 
 write.csv(match_information, "MatchInformation.csv", row.names = FALSE)
+
+
+
+## 8. Season Statistics (Player)
+fb_teams_url <- fb_teams_urls(fb_league_urls("ENG", "M", (current_season+1), "1st"))
+
+standard_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "standard")
+shooting_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "shooting")
+passing_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "passing")
+passing_type_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "passing_types")
+gca_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "gca")
+defence_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "defense")
+possession_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "possession")
+playing_time_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "playing_time")
+misc_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "misc")
+keeper_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "keeper")
+keeper_adv_temp <- fb_team_player_stats(team_urls = fb_teams_url, stat = "keeper_adv")
+
+
+
+player_season_stats <- power_full_join(standard_temp, shooting_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, passing_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, passing_type_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, gca_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, defence_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, possession_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, playing_time_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, misc_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, keeper_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats <- power_full_join(player_season_stats, keeper_adv_temp, by = c("Season", "Squad", "Comp", "Player", "Nation", "Pos", "Age", "PlayerURL"), conflict = coalesce_xy)
+player_season_stats$SeasonInteger <- current_season
+
+
+
+# Rewrite the team names so that it is matching with the transfer data
+player_season_stats$Squad <- if_else(player_season_stats$Squad == "Arsenal", "Arsenal FC",
+                      if_else(player_season_stats$Squad == "Aston Villa", "Aston Villa",
+                              if_else(player_season_stats$Squad == "Bournemouth", "AFC Bournemouth",
+                                      if_else(player_season_stats$Squad == "Brentford", "Brentford FC",
+                                              if_else(player_season_stats$Squad == "Brighton & Hove Albion", "Brighton & Hove Albion",
+                                                      if_else(player_season_stats$Squad == "Burnley", "Burnley FC",
+                                                              if_else(player_season_stats$Squad == "Chelsea", "Chelsea FC",
+                                                                      if_else(player_season_stats$Squad == "Crystal Palace", "Crystal Palace",
+                                                                              if_else(player_season_stats$Squad == "Everton", "Everton FC",
+                                                                                      if_else(player_season_stats$Squad == "Fulham", "Fulham FC",
+                                                                                              if_else(player_season_stats$Squad == "Liverpool", "Liverpool FC",
+                                                                                                      if_else(player_season_stats$Squad == "Luton Town", "Luton Town",
+                                                                                                              if_else(player_season_stats$Squad == "Manchester City", "Manchester City",
+                                                                                                                      if_else(player_season_stats$Squad == "Manchester United", "Manchester United",
+                                                                                                                              if_else(player_season_stats$Squad == "Newcastle United", "Newcastle United",
+                                                                                                                                      if_else(player_season_stats$Squad == "Nottingham Forest", "Nottingham Forest",
+                                                                                                                                              if_else(player_season_stats$Squad == "Sheffield United", "Sheffield United",
+                                                                                                                                                      if_else(player_season_stats$Squad == "Tottenham Hotspur", "Tottenham Hotspur",
+                                                                                                                                                              if_else(player_season_stats$Squad == "West Ham United", "West Ham United",
+                                                                                                                                                                      if_else(player_season_stats$Squad == "Wolverhampton Wanderers", "Wolverhampton Wanderers",
+                                                                                                                                                                              # Wolves
+                                                                                                                                                                              NA))))))))))))))))))))
+
+
+
+
+
+
+
+rm(standard_temp, shooting_temp, passing_temp, passing_type_temp, gca_temp, defence_temp,
+   possession_temp, playing_time_temp, misc_temp, keeper_temp, keeper_adv_temp)
+
+
+write.csv(player_season_stats, "PlayerSeasonStats.csv", row.names = FALSE)
+
+## Filter the player season stats (Close to 200 columns)
+# player_season_stats <- player_season_stats %>%
+#   select(Season, Squad, Player, Nation, Pos, Gls, `G+A`, G_minus_PK, PK, PJatt, xAG_Expected, `npxG+xAG_Expected`, PrgC_Progression, PrgP_Progression, Gls_Per_Minutes, 
+#          Ast_Per_Minutes, `G+A_Per_Minutes`, `G+A_minus_PK_Per_Minutes`, xG_Per_Minutes, xAG_Per_Minutes, `xG+xAG_Per_Minutes`, npxG_Per_Minutes, `npxG+xAG_Expected`, Gls_Standard,
+#          Sh_Standard, SoT_Standard, SoT_percent_Standard, Sh_per_90_Standard, SoT_per_90_Standard, G_per_Sh_Standard, G_per_SoT_Standard, Dist_Standard, FK_Standard, PK_Standard,
+#          npxG_per_Sh_Expected, G_minus_xG_Expected, Cmp_Total, Att_Total, Cmp_percent_Tota, TotDist_Total, PrgDist_Total, Cmp_Short, Att_Short, Cmp_percent_Short, Cmp_Medium, 
+#          Att_Medium, Cmp_percent_Medium, Cmp_Long, Att_Long, Cmp_percent_Long, xAG, xA, KP, Final_Third, PPA, CrsPA, PrgP, Att, Live_Pass_Types, Dead_Pass_Types, FK_Pass_Types, 
+#          TB_Pass_Types, Sw_Pass_Types, Crs_Pass_Types, TI_Pass_Types, CK_Pass_Types, In_Corner_Kicks, Out_Corner_Kicks, Str_Corner_Kicks, Cmp_Outcomes, Off_Outcomes, Blocks_Outcomes,
+#          SCA_SCA, SCA90_SCA, PassLive_SCA_Types, PassDead_SCA_Types, TO_SCA_Types, Sh_SCA_Types, Sh_SCA_Types, Fld_SCA_Types, Def_SCA_Types, GCA_GCA, GCA90_GCA, PassLive_GCA_Types,
+#          PassDead_GCA_Types, TO_GCA_Types, Sh_GCA_Types, Fld_GCA_Types, Def_GCA_Types, Tkl_Tackles, TklW_Tackles, `Def 3rd_Tackles`, `Mid 3rd_Tackles`)
